@@ -1,6 +1,7 @@
 package br.xadrez.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.xadrez.model.pieces.*;
@@ -14,6 +15,18 @@ public class Board {
      */
     public Board() {
         board = new Piece[8][8];
+    }
+
+    public void setUpBoard() {
+        board = new Piece[8][8];
+        List<Class<? extends Piece>> piecesClasses = Arrays.asList(
+            Rook.class, Knight.class, Bishop.class, Queen.class,
+            King.class, Bishop.class, Knight.class, Rook.class
+        );
+        placeRowPieces(7, Color.WHITE, piecesClasses);
+        placeRowPieces(0, Color.BLACK, piecesClasses);
+        placeRowPawns(6, Color.WHITE);
+        placeRowPawns(1, Color.BLACK);
     }
 
     public void placeRowPawns(int row, Color color) {
