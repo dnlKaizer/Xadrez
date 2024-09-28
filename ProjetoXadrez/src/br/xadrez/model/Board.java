@@ -16,6 +16,38 @@ public class Board {
         board = new Piece[8][8];
     }
 
+    public void placeRowPawns(int row, Color color) {
+        if (color == null) return;
+        for (int col = 0; col < 8; col++) {
+            placePiece(Position.create(row, col), Pawn.class, color);
+        }
+    }
+
+    public void placeRowPieces(int row, Color color, List<Class<? extends Piece>> piecesClasses) {
+        if (color == null || piecesClasses == null) return;
+        for (int col = 0; col < 8; col++) {
+            placePiece(Position.create(row, col), piecesClasses.get(col), color);
+        }
+    }
+
+    /**
+     * Cria e coloca uma peça em função da classe e da cor
+     * 
+     * @param position {@code Position} da peça
+     * @param pieceClass {@code Class<Piece>} da peça
+     * @param color {@code Color} da peça
+      */
+    public void placePiece(Position position, Class<? extends Piece> pieceClass, Color color) {
+        if (pieceClass == null || position == null || color == null) return;
+        Piece piece;
+        try {
+            piece = PieceFactory.createPiece(pieceClass, color, position);
+        } catch (Exception e) {
+            return;
+        }
+        board[position.getRow()][position.getCol()] = piece;
+    }
+
     /**
      * Coloca as peças na posição inicial (Módulo de Editor).
      * Se a peça já tiver em uma posição, ela será removida dela.
@@ -23,13 +55,18 @@ public class Board {
      * @param piece {@code Piece} a ser posicionada
      * @param newPosition {@code Position} da peça
       */
-    public void setPieceToPosition(Piece piece, Position newPosition) {
+    public void placePiece(Position newPosition, Piece piece) {
         if (piece == null || newPosition == null) return;
 
+        // Remove a peça da posição atual, se houver
         Position currentPosition = piece.getPosition();
-        if (currentPosition != null) board[currentPosition.getRow()][currentPosition.getCol()] = null;
-        
+        if (currentPosition != null && !currentPosition.equals(newPosition)) {
+            board[currentPosition.getRow()][currentPosition.getCol()] = null;
+        }
+
+        // Coloca a peça na nova posição
         board[newPosition.getRow()][newPosition.getCol()] = piece;
+        piece.setPosition(newPosition);
     }
 
     /**
