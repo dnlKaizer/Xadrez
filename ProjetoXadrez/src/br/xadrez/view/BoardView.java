@@ -1,7 +1,7 @@
 package br.xadrez.view;
 
-import br.xadrez.model.Board;
 import br.xadrez.model.Position;
+import br.xadrez.model.board.Board;
 import br.xadrez.model.pieces.Piece;
 
 public class BoardView {
