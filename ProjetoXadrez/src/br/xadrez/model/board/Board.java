@@ -1,5 +1,7 @@
 package br.xadrez.model.board;
 
+import java.util.List;
+
 import br.xadrez.model.Direction;
 import br.xadrez.model.Position;
 import br.xadrez.model.pieces.*;
@@ -7,9 +9,17 @@ import br.xadrez.model.pieces.*;
 public class Board {
     
     private Piece[][] board;
+    private King whiteKing;
+    private King blackKing;
+    private List<Piece> whitePieces;
+    private List<Piece> blackPieces;
     
-    protected Board(Piece[][] board) {
+    protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces) {
         this.board = board;
+        this.whiteKing = whiteKing;
+        this.blackKing = blackKing;
+        this.whitePieces = whitePieces;
+        this.blackPieces = blackPieces;
     }
 
     /**

@@ -1,6 +1,7 @@
 package br.xadrez.model.board;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import br.xadrez.model.Color;
@@ -42,12 +43,18 @@ public class BoardBuilder {
     }
 
     private Board config() {
-        // Adicionar tudo necessário
-        return new Board(board.clone());
+        return new Board(
+            board.clone(),
+            whiteKing.clone(),
+            blackKing.clone(),
+            new ArrayList<>(whitePieces),
+            new ArrayList<>(blackPieces)
+        );
     }
 
     private boolean verifyBoard() {
-        // Lógica para verificar se o tabuleiro é válido
+        if (whiteKing == null || blackKing == null) return false;
+        if (whiteKing.getPosition().isNear(blackKing.getPosition())) return false;
         return true;
     }
 
