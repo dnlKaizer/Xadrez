@@ -2,6 +2,7 @@ package br.xadrez.model.pieces;
 
 import br.xadrez.model.Color;
 import br.xadrez.model.Position;
+import br.xadrez.model.board.Board;
 
 public abstract class Piece implements Cloneable {
     
@@ -25,6 +26,8 @@ public abstract class Piece implements Cloneable {
     }
 
     public abstract String getName();
+
+    public abstract boolean isAttacking(Position square, Board board);
 
     @Override
     public Piece clone() {
