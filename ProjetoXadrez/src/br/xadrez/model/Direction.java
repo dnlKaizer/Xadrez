@@ -25,9 +25,12 @@ public class Direction {
     }
     public static Direction create(Position from, Position to) {
         if (from == null || to == null) return null;
+        int x = to.getRow() - from.getRow();
+        int y = to.getCol() - from.getCol();
+        if (x != 0 && y != 0 && (Math.abs(x) != Math.abs(y))) return null;
         return Direction.create(
-            (int) Math.signum(to.getRow() - from.getRow()),
-            (int) Math.signum(to.getCol() - from.getCol()));
+            (int) Math.signum(x),
+            (int) Math.signum(y));
     }
 
     public int getX() {

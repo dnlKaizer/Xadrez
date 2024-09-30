@@ -30,6 +30,10 @@ public class Pawn extends Piece {
         }  
     }
 
+    public Direction getMoveDirection() {
+        return this.moveDirection;
+    }
+
     @Override
     public String getName() {
         return "Peão";
@@ -58,15 +62,15 @@ public class Pawn extends Piece {
             possibleMoves.add(newPosition);
         }
         if (canEnPassant(board)) {
-            // newPosition = PEGAR POSIÇÃO DO TABULEIRO;
-            // possibleMoves.add(newPosition);
+            newPosition = Position.create(initialRow + (4 * moveDirection.getX()), board.getEnPassantCol());
+            possibleMoves.add(newPosition);
         }
         return possibleMoves;
     }
 
     private boolean canEnPassant(Board board) {
-        if (!(Math.abs(7 - initialRow) == this.position.getRow())) return false;
-        // VERIFICAR NO TABULEIRO SE A ULTIMA PEÇA A SE MEXER FOI UM PEÃO ADJACENTE
+        if (!(initialRow + (3 * moveDirection.getX()) == this.position.getRow())) return false;
+        if (board.getEnPassantCol() != -1) return true;
         return false;
     }
 

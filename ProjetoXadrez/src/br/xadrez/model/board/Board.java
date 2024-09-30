@@ -17,6 +17,7 @@ public class Board {
     private List<Piece> blackPieces;
     private List<Piece> capturedWhitePieces;
     private List<Piece> capturedBlackPieces;
+    private int enPassantCol;
     
     protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces) {
         this.board = board;
@@ -26,6 +27,11 @@ public class Board {
         this.blackPieces = blackPieces;
         this.capturedWhitePieces = new ArrayList<>();
         this.capturedBlackPieces = new ArrayList<>();
+        this.enPassantCol = -1;
+    }
+
+    public int getEnPassantCol() {
+        return enPassantCol;
     }
 
     /**
@@ -100,8 +106,27 @@ public class Board {
         return false;
     }
 
-    public void move(Piece piece, Position newPosition) {
+    public void move(Position from, Position to) {
+        Piece piece = getPieceAt(from);
+        if (piece == null) return;
+        if (piece.getValidMoves(this).contains(to)) {
+            System.out.println(to.toString());
+            makeMove(piece, to);
+        };
+    }
+
+    private void makeMove(Piece piece, Position newPosition) {
         Piece pieceAtNewPosition = getPieceAt(newPosition);
+        Position currentPosition = piece.getPosition();
+        this.board[currentPosition.getRow()][currentPosition.getCol()] = null;
+
+        if (piece instanceof Pawn) {
+            Direction direction = ((Pawn)piece).getMoveDirection();
+            currentPosition = direction.getNextPosition(direction.getNextPosition(currentPosition));
+            if (currentPosition.equals(newPosition)) enPassantCol = newPosition.getCol();
+            else enPassantCol = -1;
+        } else enPassantCol = -1;
+        
         if (pieceAtNewPosition != null) capture(pieceAtNewPosition);
         this.board[newPosition.getRow()][newPosition.getCol()] = piece;
         piece.setPosition(newPosition);
@@ -125,8 +150,9 @@ public class Board {
 
     public boolean isMoveValid(Piece piece, Position newPosition) {
         Board newBoard = copyBoard();
-        newBoard.move(piece, newPosition);
-        return !(newBoard.isInCheck(piece.getColor()));
+        newBoard.makeMove(piece, newPosition);
+        boolean isMoveValid = !(newBoard.isInCheck(piece.getColor()));
+        return isMoveValid;
     }
 
     private Board copyBoard() {
