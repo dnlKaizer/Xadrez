@@ -1,5 +1,6 @@
 package br.xadrez.model.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.xadrez.model.Color;
@@ -14,6 +15,8 @@ public class Board {
     private King blackKing;
     private List<Piece> whitePieces;
     private List<Piece> blackPieces;
+    private List<Piece> capturedWhitePieces;
+    private List<Piece> capturedBlackPieces;
     
     protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces) {
         this.board = board;
@@ -21,6 +24,8 @@ public class Board {
         this.blackKing = blackKing;
         this.whitePieces = whitePieces;
         this.blackPieces = blackPieces;
+        this.capturedWhitePieces = new ArrayList<>();
+        this.capturedBlackPieces = new ArrayList<>();
     }
 
     /**
@@ -72,6 +77,12 @@ public class Board {
         return pieceTo == null || (!pieceFrom.getColor().equals(pieceTo.getColor()));
     }
 
+    /**
+     * Verifica se o rei da cor está em xeque.
+     * 
+     * @param color {@code Color} do rei
+     * @return {@code true} se estiver em xeque, {@code false} se não
+      */
     public boolean isInCheck(Color color) {
         List<Piece> pieces;
         King king;
@@ -86,6 +97,22 @@ public class Board {
             if (piece.isAttacking(king.getPosition(), this)) return true;
         }
         return false;
+    }
+
+    /**
+     * Captura a peça.
+     * 
+     * @param piece {@code Piece} peça capturada
+      */
+    public void capture(Piece piece) {
+        if (piece.getColor().isWhite()) {
+            this.whitePieces.remove(piece);
+            this.capturedWhitePieces.add(piece);
+        } else {
+            this.blackPieces.remove(piece);
+            this.capturedBlackPieces.add(piece);
+        }
+        piece.setPosition(null);
     }
 
 }
