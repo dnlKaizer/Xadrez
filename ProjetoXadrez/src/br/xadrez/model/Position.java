@@ -1,5 +1,7 @@
 package br.xadrez.model;
 
+import java.util.regex.*;
+
 public class Position {
     private final int row;
     private final int col;
@@ -12,6 +14,16 @@ public class Position {
     public static Position create(int row, int col) {
         if (row < 0 || row > 7 || col < 0 || col > 7) return null;
         return new Position(row, col);
+    }
+
+    public static Position create(String string) {
+        Pattern pattern = Pattern.compile("^[a-h][1-8]$");
+        Matcher matcher = pattern.matcher(string);
+        if (!matcher.matches()) return null;
+        return Position.create(
+            56 - string.charAt(1),
+            string.charAt(0) - 97
+        );
     }
 
     public int getRow() {
