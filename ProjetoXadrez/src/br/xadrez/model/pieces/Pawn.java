@@ -9,6 +9,7 @@ import br.xadrez.model.Position;
 import br.xadrez.model.board.Board;
 
 public class Pawn extends Piece {
+    private final int initialRow;
     private final Direction moveDirection;
     private final List<Direction> attackDirections;
 
@@ -17,10 +18,12 @@ public class Pawn extends Piece {
         this.attackDirections = new ArrayList<>();
 
         if (color.isWhite()) {
+            initialRow = 6;
             moveDirection = Direction.UP;
             attackDirections.add(Direction.UP_RIGHT);
             attackDirections.add(Direction.UP_LEFT);
         } else {
+            initialRow = 1;
             moveDirection = Direction.DOWN;
             attackDirections.add(Direction.DOWN_RIGHT);
             attackDirections.add(Direction.DOWN_LEFT);
@@ -50,7 +53,21 @@ public class Pawn extends Piece {
             Piece piece = board.getPieceAt(newPosition);
             if (piece != null && !piece.getColor().equals(this.getColor())) possibleMoves.add(newPosition);
         }
+        if (position.getRow() == initialRow) {
+            newPosition = Position.create(initialRow + (2 * moveDirection.getX()), position.getCol());
+            possibleMoves.add(newPosition);
+        }
+        if (canEnPassant(board)) {
+            // newPosition = PEGAR POSIÇÃO DO TABULEIRO;
+            // possibleMoves.add(newPosition);
+        }
         return possibleMoves;
+    }
+
+    private boolean canEnPassant(Board board) {
+        if (!(Math.abs(7 - initialRow) == this.position.getRow())) return false;
+        // VERIFICAR NO TABULEIRO SE A ULTIMA PEÇA A SE MEXER FOI UM PEÃO ADJACENTE
+        return false;
     }
 
     @Override
