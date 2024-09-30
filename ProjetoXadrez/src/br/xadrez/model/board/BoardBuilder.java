@@ -43,12 +43,20 @@ public class BoardBuilder {
     }
 
     private Board config() {
+        List<Piece> whitePieces = new ArrayList<>();
+        for (int i = 0; i < whitePieces.size(); i++) {
+            whitePieces.add(this.whitePieces.get(i).clone());
+        }
+        List<Piece> blackPieces = new ArrayList<>();
+        for (int i = 0; i < blackPieces.size(); i++) {
+            blackPieces.add(this.blackPieces.get(i).clone());
+        }
         return new Board(
             board.clone(),
             whiteKing.clone(),
             blackKing.clone(),
-            new ArrayList<>(whitePieces),
-            new ArrayList<>(blackPieces)
+            whitePieces,
+            blackPieces
         );
     }
 
@@ -132,6 +140,7 @@ public class BoardBuilder {
 
     private void placeAtBoard(Piece piece, Position position) {
         verifyKing(piece, position);
+        storePiece(piece);
         board[position.getRow()][position.getCol()] = piece;
         piece.setPosition(position);
     }
@@ -148,6 +157,13 @@ public class BoardBuilder {
             else if (!this.blackKing.equals(piece)) 
                 throw new IllegalArgumentException("Inserção inválida: rei preto duplicado");
         }
+    }
+
+    private void storePiece(Piece piece) {
+        List<Piece> pieces = piece.getColor().isWhite() ? whitePieces : blackPieces;
+        int index = pieces.indexOf(piece);
+        if (index == -1) pieces.add(piece);
+        else pieces.set(index, piece);
     }
 
 }
