@@ -33,6 +33,14 @@ public abstract class Piece implements Cloneable {
 
     public abstract List<Position> getPossibleMoves(Board board);
 
+    public List<Position> getValidMoves(Board board) {
+        List<Position> moves = getPossibleMoves(board);
+        for (Position move : moves) {
+            if (!board.isMoveValid(this, move)) moves.remove(move);
+        }
+        return moves;
+    }
+
     @Override
     public Piece clone() {
         try {
