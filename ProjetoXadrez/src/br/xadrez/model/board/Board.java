@@ -99,6 +99,12 @@ public class Board {
         return false;
     }
 
+    public void move(Piece piece, Position newPosition) {
+        if (newPosition != null) capture(getPieceAt(newPosition));
+        this.board[newPosition.getRow()][newPosition.getCol()] = piece;
+        piece.setPosition(newPosition);
+    }
+
     /**
      * Captura a peça.
      * 
@@ -113,6 +119,12 @@ public class Board {
             this.capturedBlackPieces.add(piece);
         }
         piece.setPosition(null);
+    }
+
+    public boolean isMoveValid(Piece piece, Position newPosition) {
+        Board newBoard = copyBoard();
+        newBoard.move(piece, newPosition);
+        return !(newBoard.isInCheck(piece.getColor()));
     }
 
     private Board copyBoard() {
