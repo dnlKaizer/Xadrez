@@ -1,5 +1,7 @@
 package br.xadrez.model.pieces;
 
+import java.util.List;
+
 import br.xadrez.model.Color;
 import br.xadrez.model.Position;
 import br.xadrez.model.board.Board;
@@ -28,6 +30,8 @@ public abstract class Piece implements Cloneable {
     public abstract String getName();
 
     public abstract boolean isAttacking(Position square, Board board);
+
+    public abstract List<Position> getPossibleMoves(Board board);
 
     @Override
     public Piece clone() {
