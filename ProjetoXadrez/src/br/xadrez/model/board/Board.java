@@ -115,4 +115,24 @@ public class Board {
         piece.setPosition(null);
     }
 
+    private Board copyBoard() {
+        Piece[][] newBoard = new Piece[8][8];
+        King newWhiteKing = this.whiteKing.clone();
+        King newBlackKing = this.blackKing.clone();
+        List<Piece> newWhitePieces = new ArrayList<>();
+        List<Piece> newBlackPieces = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = this.board[i][j];
+                if (piece != null) {
+                    piece = piece.clone();
+                    if (piece.getColor().isWhite()) newWhitePieces.add(piece);
+                    else newBlackPieces.add(piece);
+                }
+                newBoard[i][j] = piece;
+            }
+        }
+        return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces);
+    }
+    
 }
