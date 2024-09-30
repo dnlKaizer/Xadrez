@@ -2,6 +2,7 @@ package br.xadrez.model.board;
 
 import java.util.List;
 
+import br.xadrez.model.Color;
 import br.xadrez.model.Direction;
 import br.xadrez.model.Position;
 import br.xadrez.model.pieces.*;
@@ -69,6 +70,22 @@ public class Board {
         Piece pieceFrom = getPieceAt(from);
         Piece pieceTo = getPieceAt(to);
         return pieceTo == null || (!pieceFrom.getColor().equals(pieceTo.getColor()));
+    }
+
+    public boolean isInCheck(Color color) {
+        List<Piece> pieces;
+        King king;
+        if (color.isWhite()) {
+            king = whiteKing;
+            pieces = blackPieces;
+        } else {
+            king = blackKing;
+            pieces = whitePieces;
+        }
+        for (Piece piece : pieces) {
+            if (piece.isAttacking(king.getPosition(), this)) return true;
+        }
+        return false;
     }
 
 }
