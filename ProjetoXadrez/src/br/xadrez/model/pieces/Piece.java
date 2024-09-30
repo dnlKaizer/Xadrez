@@ -35,5 +35,13 @@ public abstract class Piece implements Cloneable {
             return null;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Piece piece = (Piece) obj;
+        return piece.getColor().equals(this.getColor()) && piece.getPosition().equals(this.getPosition());
+    }
     
 }
