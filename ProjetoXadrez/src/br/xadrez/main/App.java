@@ -1,7 +1,6 @@
 package br.xadrez.main;
 
 import br.xadrez.controller.BoardController;
-import br.xadrez.model.Board;
 import br.xadrez.model.board.BoardBuilder;
 import br.xadrez.view.BoardView;
 
