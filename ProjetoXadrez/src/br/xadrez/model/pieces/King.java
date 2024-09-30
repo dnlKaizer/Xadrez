@@ -24,8 +24,8 @@ public class King extends Piece {
 
     protected King(Color color, Position position) {
         super(color, position);
-        if (color.isWhite()) hasMoved = !position.equals(Position.create(7, 4));
-        else hasMoved = !position.equals(Position.create(0, 4));
+        if (color.isWhite()) hasMoved = !Position.create(7, 4).equals(position);
+        else hasMoved = !Position.create(0, 4).equals(position);
     }
 
     @Override

@@ -12,12 +12,12 @@ public class MoveUtils {
     public static List<Position> getAllPossibleMoves(Board board, Position from, Direction[] directions) {
         List<Position> possibleMoves = new ArrayList<>();
         for (int i = 0; i < directions.length; i++) {
+            Position to = from;
             while (true) {
                 Direction direction = directions[i];
-                Position to = direction.getNextPosition(from);
+                to = direction.getNextPosition(to);
                 if (board.isPathClear(from, to)) possibleMoves.add(to);
                 else break;
-                from = to;
             };
         }
         return possibleMoves;

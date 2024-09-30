@@ -35,8 +35,12 @@ public abstract class Piece implements Cloneable {
 
     public List<Position> getValidMoves(Board board) {
         List<Position> moves = getPossibleMoves(board);
-        for (Position move : moves) {
-            if (!board.isMoveValid(this, move)) moves.remove(move);
+        for (int i = 0; i < moves.size(); i++) {
+            Position move = moves.get(i);
+            if (!board.isMoveValid(this, move)) {
+                moves.remove(move);
+                i--;
+            } 
         }
         return moves;
     }

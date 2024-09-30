@@ -35,6 +35,7 @@ public class Board {
      * @return {@code Piece} na posição do parâmetro ou {@code null} se a posição não for válida ou não tiver peça
       */
     public Piece getPieceAt(Position position) {
+        if (position == null) return null;
         Piece piece = board[position.getRow()][position.getCol()];
         if (piece == null) return null;
         else return piece.clone(); 
@@ -100,7 +101,8 @@ public class Board {
     }
 
     public void move(Piece piece, Position newPosition) {
-        if (newPosition != null) capture(getPieceAt(newPosition));
+        Piece pieceAtNewPosition = getPieceAt(newPosition);
+        if (pieceAtNewPosition != null) capture(pieceAtNewPosition);
         this.board[newPosition.getRow()][newPosition.getCol()] = piece;
         piece.setPosition(newPosition);
     }

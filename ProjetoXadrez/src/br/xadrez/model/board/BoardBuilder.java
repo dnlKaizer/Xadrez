@@ -17,6 +17,8 @@ public class BoardBuilder {
 
     public BoardBuilder() {
         this.board = new Piece[8][8];
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
     }
 
     /**

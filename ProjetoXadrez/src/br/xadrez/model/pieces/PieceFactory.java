@@ -1,6 +1,7 @@
 package br.xadrez.model.pieces;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import br.xadrez.model.Color;
 import br.xadrez.model.Position;
@@ -40,6 +41,14 @@ public class PieceFactory {
             return piece;
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException("Construtor não encontrado na classe " + pieceClass.getName(), e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Erro de acesso ao construtor da classe: " + pieceClass.getName(), e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException("A classe é abstrata ou é uma interface: " + pieceClass.getName(), e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Exceção do construtor da classe: " + pieceClass.getName(), e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Argumentos inválidos para instanciar a classe: " + pieceClass.getName(), e);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar instância da classe: " + pieceClass.getName(), e);
         }

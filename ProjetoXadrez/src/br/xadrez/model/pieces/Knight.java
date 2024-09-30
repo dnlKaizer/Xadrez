@@ -46,8 +46,12 @@ public class Knight extends Piece {
     @Override
     public List<Position> getPossibleMoves(Board board) {
         List<Position> possibleMoves = getJumpPosition();
-        for (Position newPosition : possibleMoves) {
-            if (!board.isDestinationClear(this.position, newPosition)) possibleMoves.remove(newPosition);
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            Position newPosition = possibleMoves.get(i);
+            if (!board.isDestinationClear(this.position, newPosition)) {
+                possibleMoves.remove(newPosition);
+                i--;
+            }
         }
         return possibleMoves;
     }
