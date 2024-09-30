@@ -9,6 +9,10 @@ import br.xadrez.model.pieces.*;
 
 public class BoardBuilder {
     private Piece[][] board;
+    private King whiteKing;
+    private King blackKing;
+    private List<Piece> whitePieces;
+    private List<Piece> blackPieces;
 
     public BoardBuilder() {
         this.board = new Piece[8][8];
@@ -39,7 +43,7 @@ public class BoardBuilder {
 
     private Board config() {
         // Adicionar tudo necessário
-        return new Board(board);
+        return new Board(board.clone());
     }
 
     private boolean verifyBoard() {
@@ -120,8 +124,23 @@ public class BoardBuilder {
     }
 
     private void placeAtBoard(Piece piece, Position position) {
+        verifyKing(piece, position);
         board[position.getRow()][position.getCol()] = piece;
         piece.setPosition(position);
+    }
+
+    private void verifyKing(Piece piece, Position position) {
+        if (!(piece instanceof King)) return;
+        
+        if (piece.getColor().isWhite()) {
+            if (this.whiteKing == null) this.whiteKing = (King) piece;
+            else if (!this.whiteKing.equals(piece)) 
+                throw new IllegalArgumentException("Inserção inválida: rei branco duplicado");
+        } else {
+            if (this.blackKing == null) this.blackKing = (King) piece;
+            else if (!this.blackKing.equals(piece)) 
+                throw new IllegalArgumentException("Inserção inválida: rei preto duplicado");
+        }
     }
 
 }
