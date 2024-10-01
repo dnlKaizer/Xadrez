@@ -31,6 +31,11 @@ public class Queen extends Piece {
     }
 
     @Override
+    public String getSymbol() {
+        return "D";
+    }
+
+    @Override
     public boolean isAttacking(Position square, Board board) {
         Direction direction = Direction.create(this.position, square);
         return !(direction == null) && board.isPathClear(this.position, square);

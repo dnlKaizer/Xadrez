@@ -5,8 +5,8 @@ public class Color {
     private final boolean isWhite; 
 
     // Constantes para cores brancas e pretas
-    public static final Color WHITE = new Color("Branco", true);
-    public static final Color BLACK = new Color("Preto", false);
+    public static final Color WHITE = new Color("Brancas", true);
+    public static final Color BLACK = new Color("Pretas", false);
 
     // Construtor privado para impedir a criação de novas instâncias
     private Color(String name, boolean isWhite) {

@@ -34,6 +34,11 @@ public class King extends Piece {
     }
 
     @Override
+    public String getSymbol() {
+        return "R";
+    }
+
+    @Override
     public boolean isAttacking(Position square, Board board) {
         return false;
     }

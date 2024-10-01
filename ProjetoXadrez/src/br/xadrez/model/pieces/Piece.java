@@ -29,6 +29,8 @@ public abstract class Piece implements Cloneable {
 
     public abstract String getName();
 
+    public abstract String getSymbol();
+
     public abstract boolean isAttacking(Position square, Board board);
 
     public abstract List<Position> getPossibleMoves(Board board);

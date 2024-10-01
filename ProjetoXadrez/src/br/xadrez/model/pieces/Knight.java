@@ -38,6 +38,11 @@ public class Knight extends Piece {
     }
 
     @Override
+    public String getSymbol() {
+        return "C";
+    }
+
+    @Override
     public boolean isAttacking(Position square, Board board) {
         List<Position> list = getJumpPosition();
         return list.contains(square);

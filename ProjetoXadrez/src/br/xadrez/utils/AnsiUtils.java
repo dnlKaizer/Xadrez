@@ -13,7 +13,7 @@ public class AnsiUtils {
     public static final String PURPLE_TEXT = "\u001B[35m";
     public static final String CYAN_TEXT = "\u001B[36m";
     public static final String WHITE_TEXT = "\u001B[37m";
-
+    
     // Background colors
     public static final String BLACK_BACKGROUND = "\u001B[40m";
     public static final String RED_BACKGROUND = "\u001B[41m";
@@ -23,13 +23,30 @@ public class AnsiUtils {
     public static final String PURPLE_BACKGROUND = "\u001B[45m";
     public static final String CYAN_BACKGROUND = "\u001B[46m";
     public static final String WHITE_BACKGROUND = "\u001B[47m";
+    public static final String GRAY_BACKGROUND = "\033[48;5;238m";
 
     public void printRed(String string) {
-        System.out.print(RED_BACKGROUND + BLACK_TEXT + string + RESET);
+        System.out.print(RED_BACKGROUND + "\u001B[4m" + string + RESET);
     }
 
     public void printBlue(String string) {
-        System.out.print(BLUE_BACKGROUND + BLACK_TEXT + string + RESET);
+        System.out.print(BLUE_BACKGROUND + "\u001B[4m" + string + RESET);
+    }
+
+    public void printWhite(String string) {
+        System.out.print(WHITE_BACKGROUND + "\u001B[4m" + string + RESET);
+    }
+
+    public void printBlack(String string) {
+        System.out.print(BLACK_BACKGROUND + "\u001B[4m" + string + RESET);
+    }
+
+    public void printGray(String string) {
+        System.out.print(GRAY_BACKGROUND + "\u001B[4m" + string + RESET);
+    }
+
+    public void printGreen(String string) {
+        System.out.print(GREEN_BACKGROUND + "\u001B[4m" + string + RESET);
     }
 
     public void moveCursorUp(int num) {

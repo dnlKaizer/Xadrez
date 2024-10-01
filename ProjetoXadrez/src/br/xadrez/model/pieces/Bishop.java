@@ -27,6 +27,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public String getSymbol() {
+        return "B";
+    }
+
+    @Override
     public boolean isAttacking(Position square, Board board) {
         Direction direction = Direction.create(this.position, square);
         return !(direction == null) && direction.isDiagonal() && board.isPathClear(this.position, square);

@@ -27,6 +27,11 @@ public class Rook extends Piece {
     }
 
     @Override
+    public String getSymbol() {
+        return "T";
+    }
+
+    @Override
     public boolean isAttacking(Position square, Board board) {
         Direction direction = Direction.create(this.position, square);
         return !(direction == null) && !(direction.isDiagonal()) && board.isPathClear(this.position, square);
