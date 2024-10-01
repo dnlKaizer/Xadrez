@@ -1,0 +1,60 @@
+1. Mover o Cursor
+
+Cima: \u001B[{n}A — Move o cursor n linhas para cima.
+Baixo: \u001B[{n}B — Move o cursor n linhas para baixo.
+Direita: \u001B[{n}C — Move o cursor n colunas para a direita.
+Esquerda: \u001B[{n}D — Move o cursor n colunas para a esquerda.
+Posicionar o Cursor: \u001B[{n};{m}H — Move o cursor para a linha n e coluna m.
+Salvar a Posição do Cursor: \u001B[s — Salva a posição atual do cursor.
+Restaurar a Posição do Cursor: \u001B[u — Restaura a posição do cursor salva com \u001B[s.
+
+2. Limpeza de Tela e Linhas
+
+Limpar a Tela: \u001B[2J — Limpa a tela e move o cursor para o canto superior esquerdo.
+Limpar da Posição Atual até o Fim da Tela: \u001B[0J — Limpa da posição atual do cursor até o final da tela.
+Limpar da Posição Atual até o Início da Tela: \u001B[1J — Limpa da posição atual do cursor até o início da tela.
+Limpar a Linha Atual: \u001B[2K — Limpa toda a linha onde o cursor está localizado.
+Limpar do Cursor até o Fim da Linha: \u001B[0K — Limpa da posição atual do cursor até o final da linha.
+
+
+3. Texto em Negrito, Substituído ou Sublinado
+
+Negrito (bold): \u001B[1m — Deixa o texto em negrito.
+Sublinhar (underline): \u001B[4m — Adiciona sublinhado ao texto.
+Texto Piscando: \u001B[5m — Faz o texto piscar.
+Inverter Cores (invert): \u001B[7m — Inverte as cores do fundo e do texto.
+Resetar Formatação: \u001B[0m — Reseta qualquer estilo aplicado, como negrito, sublinhado, cores, etc.
+
+4. Cores de Texto e Fundo
+
+Cores de Texto:
+Preto: \u001B[30m
+Vermelho: \u001B[31m
+Verde: \u001B[32m
+Amarelo: \u001B[33m
+Azul: \u001B[34m
+Magenta: \u001B[35m
+Ciano: \u001B[36m
+Branco: \u001B[37m
+Cores de Fundo:
+Preto: \u001B[40m
+Vermelho: \u001B[41m
+Verde: \u001B[42m
+Amarelo: \u001B[43m
+Azul: \u001B[44m
+Magenta: \u001B[45m
+Ciano: \u001B[46m
+Branco: \u001B[47m
+Resetar Cores:
+Resetar cor de texto e fundo: \u001B[0m
+
+
+5. Scroll no Terminal
+
+Habilitar área de scroll: \u001B[{n1};{n2}r — Define a área de scroll entre as linhas n1 e n2.
+Scroll para cima: \u001B[{n}S — Move o conteúdo da tela n linhas para cima.
+Scroll para baixo: \u001B[{n}T — Move o conteúdo da tela n linhas para baixo.
+
+6. Ocultar e Mostrar o Cursor
+Ocultar o Cursor: \u001B[?25l
+Mostrar o Cursor: \u001B[?25h
