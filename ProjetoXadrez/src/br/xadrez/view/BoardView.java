@@ -19,6 +19,10 @@ public class BoardView {
             printRow(board, row);
         }
         System.out.println("   a  b  c  d  e  f  g  h ");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public void printRow(Board board, int row) {
@@ -40,47 +44,61 @@ public class BoardView {
         System.out.println();
     }
 
-    public void printMenu(Board board, Color turn) {
-        printBoard(board);
-        printTurn(turn);
+    public void printMenu(Board board) {
+        menuPrinter(strPrintTurn(board.getTurn()));
     }
 
-    public Piece selectPiece(Board board, Color turn) {
-        System.out.println();
+    public void printSubMenu(Piece piece) {
+        menuPrinter(strPrintPiece(piece));
+    }
+
+    private void menuPrinter(String str) {
+        ansi.moveCursorUp(3);
+        ansi.start();
         ansi.save();
-        System.out.println();
-        ansi.restore();
-        return getPiece(board, turn);
+        ansi.replaceLine(str);
+        ansi.moveCursorDown(2);
+        ansi.start();
+        ansi.save();
     }
 
-    public void printTurn(Color turn) {
-        System.out.println(br + "Turno: " + turn.getName());
+    private String strPrintTurn(Color turn) {
+        return "Turno: " + turn.getName();
     }
 
-    private Position getPosition() {
+    private String strPrintPiece(Piece piece) {
+        return "Selecionado(a): "
+            + piece.getName() + " (" + piece.getColor().toString() + ") em " + piece.getPosition().toString();
+    }
+
+    public Piece selectPiece(Board board) {
+        return getPiece(board);
+    }
+    
+    private Piece getPiece(Board board) {
         while (true) {
-            ansi.replaceLine("Selecione uma peça: ");
-            String str = scan.next();
-            Position pos = Position.create(str);
-            if (pos != null) return pos;
-            ansi.replaceLine("Posição inválida.");
-            wait(1500);
-        }
-    }
-
-    private Piece getPiece(Board board, Color turn) {
-        while (true) {
-            Piece piece = board.getPieceAt(getPosition());
+            Piece piece = board.getPieceAt(selectPosition());
             if (piece != null) {
-                if (piece.getColor().equals(turn)) return piece;
+                if (piece.getColor().equals(board.getTurn())) return piece;
                 else {
-                    ansi.replaceLine("Peça incorreta. Turno das " + turn.getName().toLowerCase() + ".");
+                    ansi.replaceLine("Peça incorreta. Turno das " + board.getTurn().getName().toLowerCase() + ".");
                     wait(1500);
                 }
             } else {
                 ansi.replaceLine("Posição sem peça.");
                 wait(1500);
             }
+        }
+    }
+    
+    public Position selectPosition() {
+        while (true) {
+            ansi.replaceLine("Escolha uma posição: ");
+            String str = scan.next();
+            Position pos = Position.create(str);
+            if (pos != null) return pos;
+            ansi.replaceLine("Posição inválida.");
+            wait(1500);
         }
     }
 
