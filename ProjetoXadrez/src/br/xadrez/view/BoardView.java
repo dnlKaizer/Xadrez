@@ -1,6 +1,7 @@
 package br.xadrez.view;
 
 import java.util.Scanner;
+import java.util.List;
 
 import br.xadrez.model.Color;
 import br.xadrez.model.Position;
@@ -13,35 +14,89 @@ public class BoardView {
     private String br = System.lineSeparator();
     private final AnsiUtils ansi = new AnsiUtils();
 
-    public void printBoard(Board board) {
+    public void printBoardComplete(Board board) {
         System.out.println();
-        for (int row = 0; row < 8; row++) {
-            printRow(board, row);
-        }
-        System.out.println("   a  b  c  d  e  f  g  h ");
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        printBoard(board);
+        System.out.println(br + br + br);
     }
 
-    public void printRow(Board board, int row) {
-        System.out.print((8 - row) + " ");
+    public void printBoard(Board board) {
+        for (int row = 0; row < 8; row++) {
+            System.out.println(printRow(board, row));
+        }
+        System.out.println("   a  b  c  d  e  f  g  h ");
+    }
+
+    public void updateBoard(Board board, Position currentPosition, Position newPosition) {
+        ansi.placeBoard(currentPosition.getRow(), currentPosition.getCol());
+        System.out.print(printSquare(board.getPieceAt(currentPosition), currentPosition.getRow(), currentPosition.getCol()));
+
+        ansi.placeBoard(newPosition.getRow(), newPosition.getCol());
+        System.out.print(printSquare(board.getPieceAt(newPosition), newPosition.getRow(), newPosition.getCol()));
+
+        ansi.restore();
+        ansi.moveCursorDown(1);
+    }
+
+    public String printRow(Board board, int row) {
+        String line = "";
+        line += (8 - row) + " ";
         for (int col = 0; col < 8; col++) {
             Piece piece = board.getPieceAt(Position.create(row, col));
-            String str;
-            if (piece == null) str = "   ";
-            else {
-                if (piece.getColor().isWhite()) {
-                    str = AnsiUtils.CYAN_TEXT + " " + piece.getSymbol() + " ";
-                } else {
-                    str = AnsiUtils.BLACK_TEXT + " " + piece.getSymbol() + " ";
-                }
-            }
-            if ((row + col) % 2 == 0) ansi.printGreen(str);
-            else ansi.printBlue(str);
+            line += printSquare(piece, row, col);
         }
-        System.out.println();
+        return line;
+    }
+
+    public String printSquare(Piece piece, int row, int col) {
+        String str;
+        if (piece == null) str = "   ";
+        else {
+            if (piece.getColor().isWhite()) {
+                str = AnsiUtils.CYAN_TEXT + " " + piece.getSymbol() + " ";
+            } else {
+                str = AnsiUtils.BLACK_TEXT + " " + piece.getSymbol() + " ";
+            }
+        }
+        if ((row + col) % 2 == 0) return ansi.printGreen(str);
+        else return ansi.printBlue(str);
+    }
+
+    public void highlightSquares(Board board, List<Position> positions) {
+        for (Position position : positions) {
+            int row = position.getRow();
+            int col = position.getCol();
+            ansi.placeBoard(row, col);
+            System.out.print(highlightSquare(board, row, col));
+        }
+        ansi.restore();
+        ansi.moveCursorDown(1);
+    }
+
+    public String highlightSquare(Board board, int row, int col) {
+        Piece piece = board.getPieceAt(Position.create(row, col));
+        String str = "";
+
+        if (piece == null) str = AnsiUtils.WHITE_TEXT + " * ";
+        else {
+            str = " " + piece.getSymbol() + " ";
+            return ansi.printRed(str);
+        }
+
+        if ((row + col) % 2 == 0) return ansi.printGreen(str);
+        else return ansi.printBlue(str);
+    }
+
+    public void restoreSquares(Board board, List<Position> positions) {
+        for (Position position : positions) {
+            int row = position.getRow();
+            int col = position.getCol();
+            Piece piece = board.getPieceAt(position);
+            ansi.placeBoard(row, col);
+            System.out.print(printSquare(piece, row, col));
+        }
+        ansi.restore();
+        ansi.moveCursorDown(1);
     }
 
     public void printMenu(Board board) {
@@ -55,7 +110,6 @@ public class BoardView {
     private void menuPrinter(String str) {
         ansi.moveCursorUp(3);
         ansi.start();
-        ansi.save();
         ansi.replaceLine(str);
         ansi.moveCursorDown(2);
         ansi.start();
@@ -81,11 +135,11 @@ public class BoardView {
             if (piece != null) {
                 if (piece.getColor().equals(board.getTurn())) return piece;
                 else {
-                    ansi.replaceLine("Peça incorreta. Turno das " + board.getTurn().getName().toLowerCase() + ".");
+                    replace("Peça incorreta. Turno das " + board.getTurn().getName().toLowerCase() + ".");
                     wait(1500);
                 }
             } else {
-                ansi.replaceLine("Posição sem peça.");
+                replace("Posição sem peça.");
                 wait(1500);
             }
         }
@@ -93,13 +147,24 @@ public class BoardView {
     
     public Position selectPosition() {
         while (true) {
-            ansi.replaceLine("Escolha uma posição: ");
+            replace("Escolha uma posição: ");
             String str = scan.next();
             Position pos = Position.create(str);
             if (pos != null) return pos;
-            ansi.replaceLine("Posição inválida.");
+            replace("Posição inválida.");
             wait(1500);
         }
+    }
+
+    public void replace(String str) {
+        ansi.restore();
+        ansi.replaceLine(str);
+    }
+
+    public void invalidMove() {
+        replace("Movimento inválido.");
+        wait(1500);
+        ansi.moveCursorDown(1);
     }
 
     private void wait(int time) {

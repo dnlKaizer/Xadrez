@@ -112,16 +112,12 @@ public class Board {
         return false;
     }
 
-    public void move(Position from, Position to) {
-        Piece piece = getPieceAt(from);
+    public void move(Piece piece, Position to) {
         if (piece == null) return;
-        if (piece.getValidMoves(this).contains(to)) {
-            System.out.println(to.toString());
-            makeMove(piece, to);
-        };
+        if (piece.getValidMoves(this).contains(to)) makeMove(piece, to);
     }
 
-    private void makeMove(Piece piece, Position newPosition) {
+    public void makeMove(Piece piece, Position newPosition) {
         if (turn.isWhite()) turn = Color.BLACK;
         else turn = Color.WHITE;
 
