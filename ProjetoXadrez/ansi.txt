@@ -5,6 +5,7 @@ Baixo: \u001B[{n}B — Move o cursor n linhas para baixo.
 Direita: \u001B[{n}C — Move o cursor n colunas para a direita.
 Esquerda: \u001B[{n}D — Move o cursor n colunas para a esquerda.
 Posicionar o Cursor: \u001B[{n};{m}H — Move o cursor para a linha n e coluna m.
+Início da linha: \u001b[1G - Move o cursor para o começo da linha
 Salvar a Posição do Cursor: \u001B[s — Salva a posição atual do cursor.
 Restaurar a Posição do Cursor: \u001B[u — Restaura a posição do cursor salva com \u001B[s.
 

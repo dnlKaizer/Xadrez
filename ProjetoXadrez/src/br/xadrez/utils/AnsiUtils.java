@@ -82,5 +82,9 @@ public class AnsiUtils {
         cleanLine();
         System.out.print(str);
     }
-    
+
+    public void start() {
+        System.out.print("\u001b[1G");
+    }
+
 }
