@@ -17,9 +17,10 @@ public class Board {
     private List<Piece> blackPieces;
     private List<Piece> capturedWhitePieces;
     private List<Piece> capturedBlackPieces;
+    private Color turn;
     private int enPassantCol;
     
-    protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces) {
+    protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces, Color turn) {
         this.board = board;
         this.whiteKing = whiteKing;
         this.blackKing = blackKing;
@@ -27,7 +28,12 @@ public class Board {
         this.blackPieces = blackPieces;
         this.capturedWhitePieces = new ArrayList<>();
         this.capturedBlackPieces = new ArrayList<>();
+        this.turn = turn;
         this.enPassantCol = -1;
+    }
+
+    public Color getTurn() {
+        return this.turn;
     }
 
     public int getEnPassantCol() {
@@ -116,6 +122,9 @@ public class Board {
     }
 
     private void makeMove(Piece piece, Position newPosition) {
+        if (turn.isWhite()) turn = Color.BLACK;
+        else turn = Color.WHITE;
+
         Piece pieceAtNewPosition = getPieceAt(newPosition);
         Position currentPosition = piece.getPosition();
         this.board[currentPosition.getRow()][currentPosition.getCol()] = null;
@@ -172,7 +181,7 @@ public class Board {
                 newBoard[i][j] = piece;
             }
         }
-        return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces);
+        return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces, turn);
     }
     
 }

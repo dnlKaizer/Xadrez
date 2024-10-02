@@ -14,11 +14,13 @@ public class BoardBuilder {
     private King blackKing;
     private List<Piece> whitePieces;
     private List<Piece> blackPieces;
+    private Color turn;
 
     public BoardBuilder() {
         this.board = new Piece[8][8];
-        whitePieces = new ArrayList<>();
-        blackPieces = new ArrayList<>();
+        this.whitePieces = new ArrayList<>();
+        this.blackPieces = new ArrayList<>();
+        this.turn = Color.WHITE;
     }
 
     /**
@@ -58,7 +60,8 @@ public class BoardBuilder {
             whiteKing.clone(),
             blackKing.clone(),
             whitePieces,
-            blackPieces
+            blackPieces,
+            turn
         );
     }
 
@@ -166,6 +169,10 @@ public class BoardBuilder {
         int index = pieces.indexOf(piece);
         if (index == -1) pieces.add(piece);
         else pieces.set(index, piece);
+    }
+
+    public void changeTurn(Color color) {
+        if (color != null) this.turn = color;
     }
 
 }
