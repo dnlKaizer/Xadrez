@@ -25,28 +25,28 @@ public class AnsiUtils {
     public static final String WHITE_BACKGROUND = "\u001B[47m";
     public static final String GRAY_BACKGROUND = "\033[48;5;238m";
 
-    public void printRed(String string) {
-        System.out.print(RED_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printRed(String string) {
+        return RED_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
-    public void printBlue(String string) {
-        System.out.print(BLUE_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printBlue(String string) {
+        return BLUE_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
-    public void printWhite(String string) {
-        System.out.print(WHITE_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printWhite(String string) {
+        return WHITE_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
-    public void printBlack(String string) {
-        System.out.print(BLACK_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printBlack(String string) {
+        return BLACK_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
-    public void printGray(String string) {
-        System.out.print(GRAY_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printGray(String string) {
+        return GRAY_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
-    public void printGreen(String string) {
-        System.out.print(GREEN_BACKGROUND + "\u001B[4m" + string + RESET);
+    public String printGreen(String string) {
+        return GREEN_BACKGROUND + "\u001B[4m" + string + RESET;
     }
 
     public void moveCursorUp(int num) {
@@ -78,13 +78,16 @@ public class AnsiUtils {
     }
     
     public void replaceLine(String str) {
-        restore();
         cleanLine();
         System.out.print(str);
     }
 
     public void start() {
         System.out.print("\u001b[1G");
+    }
+
+    public void placeBoard(int row, int col) {
+        System.out.print("\u001B[" + (row + 4) + ";" + ((col * 3) + 3) + "H");
     }
 
 }
