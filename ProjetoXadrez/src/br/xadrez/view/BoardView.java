@@ -48,44 +48,40 @@ public class BoardView {
     public Piece selectPiece(Board board, Color turn) {
         System.out.println();
         ansi.save();
-        return getPieceTerminal(board, turn);
+        System.out.println();
+        ansi.restore();
+        return getPiece(board, turn);
     }
 
     public void printTurn(Color turn) {
         System.out.println(br + "Turno: " + turn.getName());
     }
 
-    private Position getPositionTerminal() {
+    private Position getPosition() {
         while (true) {
-            replaceLine("Selecione uma peça: ");
+            ansi.replaceLine("Selecione uma peça: ");
             String str = scan.next();
             Position pos = Position.create(str);
             if (pos != null) return pos;
-            replaceLine("Posição inválida.");
+            ansi.replaceLine("Posição inválida.");
             wait(1500);
         }
     }
 
-    private Piece getPieceTerminal(Board board, Color turn) {
+    private Piece getPiece(Board board, Color turn) {
         while (true) {
-            Piece piece = board.getPieceAt(getPositionTerminal());
+            Piece piece = board.getPieceAt(getPosition());
             if (piece != null) {
                 if (piece.getColor().equals(turn)) return piece;
                 else {
-                    replaceLine("Peça incorreta. Turno das " + turn.getName().toLowerCase() + ".");
+                    ansi.replaceLine("Peça incorreta. Turno das " + turn.getName().toLowerCase() + ".");
                     wait(1500);
                 }
             } else {
-                replaceLine("Posição sem peça.");
+                ansi.replaceLine("Posição sem peça.");
                 wait(1500);
             }
         }
-    }
-
-    private void replaceLine(String str) {
-        ansi.restore();
-        ansi.cleanLine();
-        System.out.print(str);
     }
 
     private void wait(int time) {

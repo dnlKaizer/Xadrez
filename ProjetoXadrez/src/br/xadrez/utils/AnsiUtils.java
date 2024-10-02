@@ -76,5 +76,11 @@ public class AnsiUtils {
     public void cleanLine() {
         System.out.print("\u001B[2K");
     }
-
+    
+    public void replaceLine(String str) {
+        restore();
+        cleanLine();
+        System.out.print(str);
+    }
+    
 }
