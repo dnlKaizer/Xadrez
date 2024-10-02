@@ -9,7 +9,7 @@ public class App {
         AnsiConsole.systemInstall();
 
         BoardController boardController = new BoardController();
-        boardController.printBoard();
+        boardController.game();
 
         AnsiConsole.systemUninstall();
     }
