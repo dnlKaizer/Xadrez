@@ -65,8 +65,16 @@ public class AnsiUtils {
         System.out.print("\u001B[" + num + "C");
     }
 
+    public void save() {
+        System.out.print("\u001B[s");
+    }
+
+    public void restore() {
+        System.out.print("\u001B[u");
+    }
+
     public void cleanLine() {
-        System.out.println("\u001B[2K");
+        System.out.print("\u001B[2K");
     }
 
 }
