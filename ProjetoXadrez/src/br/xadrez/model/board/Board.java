@@ -235,4 +235,48 @@ public class Board {
         return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces, turn);
     }
     
+    public Rook getKingSideRook(Color color) {
+        Piece piece;
+        if (color.isWhite()) piece = getPieceNotCloned(Position.create(7, 7));
+        else piece = getPieceNotCloned(Position.create(0, 7));
+        if (piece == null || !(piece instanceof Rook)) return null;
+        else return (Rook) piece;
+    }
+
+    public boolean canKingSideRookCastle(Color color) {
+        King king = color.isWhite() ? whiteKing : blackKing;
+        Rook rook = getKingSideRook(color);
+        List<Position> positions = new ArrayList<>();
+        positions.add(Direction.RIGHT.getNextPosition(king.getPosition()));
+        positions.add(Direction.RIGHT.getNextPosition(positions.get(0)));
+        for (Position position : positions) {
+            if (position != null) return false;
+            if (isAtLeastOnePieceAttacking(position, blackPieces)) return false;
+        }
+        if (rook == null) return false;
+        else return !rook.hasMoved();
+    }
+    
+    public Rook getQueenSideRook(Color color) {
+        Piece piece;
+        if (color.isWhite()) piece = getPieceNotCloned(Position.create(7, 0));
+        else piece = getPieceNotCloned(Position.create(0, 0));
+        if (piece == null || !(piece instanceof Rook)) return null;
+        else return (Rook) piece;
+    }
+
+    public boolean canQueenSideRookCastle(Color color) {
+        King king = color.isWhite() ? whiteKing : blackKing;
+        Rook rook = getQueenSideRook(color);
+        List<Position> positions = new ArrayList<>();
+        positions.add(Direction.LEFT.getNextPosition(king.getPosition()));
+        positions.add(Direction.LEFT.getNextPosition(positions.get(0)));
+        for (Position position : positions) {
+            if (position != null) return false;
+            if (isAtLeastOnePieceAttacking(position, blackPieces)) return false;
+        }
+        if (rook == null) return false;
+        else return !rook.hasMoved();
+    }
+
 }

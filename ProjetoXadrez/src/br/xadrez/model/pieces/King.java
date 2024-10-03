@@ -72,13 +72,11 @@ public class King extends Piece {
     }
 
     private boolean canCastleKingSide(Board board) {
-        // VERIFICAR TORRE E CASAS QUE O REI PASSA
-        return true;
+        return board.canKingSideRookCastle(color);
     } 
 
     private boolean canCastleQueenSide(Board board) {
-        // VERIFICAR TORRE E CASAS QUE O REI PASSA
-        return true;
+        return board.canQueenSideRookCastle(color);
     } 
 
     @Override
