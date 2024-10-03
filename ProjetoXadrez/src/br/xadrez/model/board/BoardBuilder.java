@@ -12,14 +12,10 @@ public class BoardBuilder {
     private Piece[][] board;
     private King whiteKing;
     private King blackKing;
-    private List<Piece> whitePieces;
-    private List<Piece> blackPieces;
     private Color turn;
 
     public BoardBuilder() {
         this.board = new Piece[8][8];
-        this.whitePieces = new ArrayList<>();
-        this.blackPieces = new ArrayList<>();
         this.turn = Color.WHITE;
     }
 
@@ -47,20 +43,34 @@ public class BoardBuilder {
     }
 
     private Board config() {
-        List<Piece> whitePieces = new ArrayList<>();
-        for (int i = 0; i < whitePieces.size(); i++) {
-            whitePieces.add(this.whitePieces.get(i).clone());
+        Piece[][] newBoard = new Piece[8][8]; 
+        List<Piece> newWhitePieces = new ArrayList<>();
+        List<Piece> newBlackPieces = new ArrayList<>();
+        King newWhiteKing = null;
+        King newBlackKing = null;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = this.board[i][j];
+                if (piece != null) {
+                    piece = piece.clone();
+                    if (piece instanceof King) {
+                        if (piece.getColor().isWhite()) newWhiteKing = (King) piece;
+                        else newBlackKing = (King) piece;
+                    } else {
+                        if (piece.getColor().isWhite()) newWhitePieces.add(piece);
+                        else newBlackPieces.add(piece);
+                    }
+                }
+                newBoard[i][j] = piece;
+            }
         }
-        List<Piece> blackPieces = new ArrayList<>();
-        for (int i = 0; i < blackPieces.size(); i++) {
-            blackPieces.add(this.blackPieces.get(i).clone());
-        }
+        
         return new Board(
-            board.clone(),
-            whiteKing.clone(),
-            blackKing.clone(),
-            whitePieces,
-            blackPieces,
+            newBoard,
+            newWhiteKing,
+            newBlackKing,
+            newWhitePieces,
+            newBlackPieces,
             turn
         );
     }
@@ -145,7 +155,6 @@ public class BoardBuilder {
 
     private void placeAtBoard(Piece piece, Position position) {
         verifyKing(piece, position);
-        storePiece(piece);
         board[position.getRow()][position.getCol()] = piece;
         piece.setPosition(position);
     }
@@ -162,13 +171,6 @@ public class BoardBuilder {
             else if (!this.blackKing.equals(piece)) 
                 throw new IllegalArgumentException("Inserção inválida: rei preto duplicado");
         }
-    }
-
-    private void storePiece(Piece piece) {
-        List<Piece> pieces = piece.getColor().isWhite() ? whitePieces : blackPieces;
-        int index = pieces.indexOf(piece);
-        if (index == -1) pieces.add(piece);
-        else pieces.set(index, piece);
     }
 
     public void changeTurn(Color color) {
