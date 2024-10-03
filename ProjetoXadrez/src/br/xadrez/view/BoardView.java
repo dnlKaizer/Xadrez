@@ -4,8 +4,10 @@ import java.util.Scanner;
 import java.util.List;
 
 import br.xadrez.model.Color;
+import br.xadrez.model.Direction;
 import br.xadrez.model.Position;
 import br.xadrez.model.board.Board;
+import br.xadrez.model.pieces.Pawn;
 import br.xadrez.model.pieces.Piece;
 import br.xadrez.utils.AnsiUtils;
 
@@ -62,12 +64,17 @@ public class BoardView {
         else return ansi.printBlue(str);
     }
 
-    public void highlightSquares(Board board, List<Position> positions) {
+    public void highlightSquares(Board board, List<Position> positions, Piece piece) {
         for (Position position : positions) {
             int row = position.getRow();
             int col = position.getCol();
             ansi.placeBoard(row, col);
-            System.out.print(highlightSquare(board, row, col));
+            if (piece instanceof Pawn && board.getPieceAt(position) == null &&
+            Direction.create(piece.getPosition(), position).isDiagonal()) {
+                System.out.print(highlightEnPassant(row, col));
+            } else {
+                System.out.print(highlightSquare(board, row, col));
+            }
         }
         ansi.restore();
         ansi.moveCursorDown(1);
@@ -85,6 +92,10 @@ public class BoardView {
 
         if ((row + col) % 2 == 0) return ansi.printGreen(str);
         else return ansi.printBlue(str);
+    }
+
+    public String highlightEnPassant(int row, int col) {
+        return ansi.printRed("   ");
     }
 
     public void restoreSquares(Board board, List<Position> positions) {

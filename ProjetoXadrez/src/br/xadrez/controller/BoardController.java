@@ -38,7 +38,8 @@ public class BoardController {
         Piece piece = boardView.selectPiece(board);
         Position currentPosition = piece.getPosition();
         List<Position> validMoves = piece.getValidMoves(board);
-        boardView.highlightSquares(board, validMoves);
+        boardView.highlightSquares(board, validMoves, piece);
+
         Position newPosition;
         boardView.printSubMenu(piece);
         newPosition = boardView.selectPosition();
