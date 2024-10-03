@@ -9,9 +9,12 @@ import br.xadrez.model.Position;
 import br.xadrez.model.pieces.*;
 
 public class BoardBuilder {
+    // Tabuleiro de peças (null representa casa vazia)
     private Piece[][] board;
+    // Referência dos reis
     private King whiteKing;
     private King blackKing;
+    // Turno
     private Color turn;
 
     public BoardBuilder() {
@@ -42,6 +45,12 @@ public class BoardBuilder {
         } else return null;
     }
 
+    /**
+     * Retorna um tabuleiro válido com
+     * todas as inserções necessárias.
+     * 
+     * @return {@code Board}
+      */
     private Board config() {
         Piece[][] newBoard = new Piece[8][8]; 
         List<Piece> newWhitePieces = new ArrayList<>();
@@ -75,6 +84,14 @@ public class BoardBuilder {
         );
     }
 
+    /**
+     * Analisa se o tabuleiro é válido. Verifica
+     * se existem dois reis e se eles não estão 
+     * próximos (o que seria ilegal) 
+     * 
+     * @return {@code true} se for válido, 
+     * {@code false} se não
+      */
     private boolean verifyBoard() {
         if (whiteKing == null || blackKing == null) return false;
         if (whiteKing.getPosition().isNear(blackKing.getPosition())) return false;
@@ -153,13 +170,33 @@ public class BoardBuilder {
         placeAtBoard(piece, newPosition);
     }
 
+    /**
+     * Coloca a peça no tabulerio e atualiza seu estado.
+     * Chama o método <b>verifyKing()</b>, para salvar sua
+     * referência e para evitar que sejam colocados dois
+     * reis da mesma cor no tabuleiro.
+     * 
+     * @param piece {@code Piece} a ser posicionada
+     * @param position {@code Position} da peça
+      */
     private void placeAtBoard(Piece piece, Position position) {
-        verifyKing(piece, position);
+        verifyKing(piece);
         board[position.getRow()][position.getCol()] = piece;
         piece.setPosition(position);
     }
 
-    private void verifyKing(Piece piece, Position position) {
+    /**
+     * Faz todas as verificações para o caso em que a
+     * peça a ser colocada no tabuleiro seja um rei.
+     * Verifica se já existe um rei de mesma cor
+     * 
+     * @param piece {@code Piece} a ser posicionada
+     * @param position {@code Position} da peça
+     * @throws IllegalArgumentException lançada caso 
+     * haja a tentativa de colocar dois reis da mesma
+     * cor no tabuleiro.
+      */
+    private void verifyKing(Piece piece) {
         if (!(piece instanceof King)) return;
         
         if (piece.getColor().isWhite()) {
@@ -173,6 +210,11 @@ public class BoardBuilder {
         }
     }
 
+    /**
+     * Troca o turno do jogo.
+     * 
+     * @param color {@code Color} cor do turno 
+      */
     public void changeTurn(Color color) {
         if (color != null) this.turn = color;
     }
