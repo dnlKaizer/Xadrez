@@ -10,6 +10,7 @@ import br.xadrez.utils.MoveUtils;
 
 public class Rook extends Piece {
 
+    private boolean hasMoved;
     private final Direction[] directions = {
         Direction.UP,
         Direction.DOWN,
@@ -19,6 +20,15 @@ public class Rook extends Piece {
 
     protected Rook(Color color, Position position) {
         super(color, position);
+        this.hasMoved = false;
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 
     @Override

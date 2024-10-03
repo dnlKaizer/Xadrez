@@ -10,7 +10,7 @@ import br.xadrez.model.board.Board;
 
 public class King extends Piece {
 
-    private final boolean hasMoved;
+    private boolean hasMoved;
     private final Direction[] directions = {
         Direction.UP_RIGHT,
         Direction.UP_LEFT,
@@ -24,8 +24,15 @@ public class King extends Piece {
 
     protected King(Color color, Position position) {
         super(color, position);
-        if (color.isWhite()) hasMoved = !Position.create(7, 4).equals(position);
-        else hasMoved = !Position.create(0, 4).equals(position);
+        this.hasMoved = false;
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 
     @Override

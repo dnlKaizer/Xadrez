@@ -66,6 +66,10 @@ public class Board {
      * @param to {@code Position} de destino
      * @return {@code true} se o caminho está livre, {@code false} se não
       */
+    public boolean isPathAndDestinationClear(Position from, Position to) {
+        return (isPathClear(from, to) && isDestinationClear(from, to));
+    }
+
     public boolean isPathClear(Position from, Position to) {
         Direction direction = Direction.create(from, to);
         if (direction == null) return false;
@@ -76,9 +80,7 @@ public class Board {
             if (getPieceNotCloned(between) != null) return false;
             between = direction.getNextPosition(between);
         }
-        
-        if (isDestinationClear(from, to)) return true;
-        else return false;
+        return true;
     }
 
     /**
@@ -129,8 +131,12 @@ public class Board {
             king = blackKing;
             pieces = whitePieces;
         }
+        return isAtLeastOnePieceAttacking(king.getPosition(), pieces);
+    }
+
+    private boolean isAtLeastOnePieceAttacking(Position position, List<Piece> pieces) {
         for (Piece piece : pieces) {
-            if (piece.isAttacking(king.getPosition(), this)) return true;
+            if (piece.isAttacking(position, this)) return true;
         }
         return false;
     }
@@ -165,6 +171,9 @@ public class Board {
         Position currentPosition = piece.getPosition();
         piece = getPieceNotCloned(currentPosition);
         this.board[currentPosition.getRow()][currentPosition.getCol()] = null;
+
+        if (piece instanceof King && !((King) piece).hasMoved()) ((King) piece).setHasMoved(true);
+        if (piece instanceof Rook && !((Rook) piece).hasMoved()) ((Rook) piece).setHasMoved(true);
 
         if (piece instanceof Pawn) {
             Direction direction = ((Pawn)piece).getMoveDirection();

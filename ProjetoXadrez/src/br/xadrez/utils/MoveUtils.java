@@ -16,7 +16,7 @@ public class MoveUtils {
             while (true) {
                 Direction direction = directions[i];
                 to = direction.getNextPosition(to);
-                if (board.isPathClear(from, to)) possibleMoves.add(to);
+                if (board.isPathAndDestinationClear(from, to)) possibleMoves.add(to);
                 else break;
             };
         }
