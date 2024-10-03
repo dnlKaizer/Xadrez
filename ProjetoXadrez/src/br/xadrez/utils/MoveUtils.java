@@ -9,6 +9,15 @@ import br.xadrez.model.board.Board;
 
 public class MoveUtils {
     
+    /**
+     * Retorna todos os movimentos possíveis em função de uma posição de origem
+     * e de um vetor de direções. Verifica se o caminho está bloqueado.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @param from {@code Position} posição de origem
+     * @param directions {@code Direction[]} vetor de direções 
+     * @return {@code List<Position>} lista de posições
+      */
     public static List<Position> getAllPossibleMoves(Board board, Position from, Direction[] directions) {
         List<Position> possibleMoves = new ArrayList<>();
         for (int i = 0; i < directions.length; i++) {
