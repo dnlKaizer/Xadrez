@@ -53,6 +53,12 @@ public class Board {
         else return piece.clone(); 
     }
 
+    private Piece getPieceNotCloned(Position position) {
+        if (position == null) return null;
+        Piece piece = board[position.getRow()][position.getCol()];
+        return piece;
+    }
+
     /**
      * Verifica se não existe peça bloqueando o caminho.
      * 
@@ -67,7 +73,7 @@ public class Board {
         // Lógica para verificar os caminhos intermediários
         Position between = direction.getNextPosition(from);
         while (!to.equals(between)) {
-            if (getPieceAt(between) != null) return false;
+            if (getPieceNotCloned(between) != null) return false;
             between = direction.getNextPosition(between);
         }
         
@@ -85,8 +91,8 @@ public class Board {
       */
     public boolean isDestinationClear(Position from, Position to) {
         if (to == null) return false;
-        Piece pieceFrom = getPieceAt(from);
-        Piece pieceTo = getPieceAt(to);
+        Piece pieceFrom = getPieceNotCloned(from);
+        Piece pieceTo = getPieceNotCloned(to);
         return pieceTo == null || (!pieceFrom.getColor().equals(pieceTo.getColor()));
     }
 
@@ -121,8 +127,9 @@ public class Board {
         if (turn.isWhite()) turn = Color.BLACK;
         else turn = Color.WHITE;
 
-        Piece pieceAtNewPosition = getPieceAt(newPosition);
+        Piece pieceAtNewPosition = getPieceNotCloned(newPosition);
         Position currentPosition = piece.getPosition();
+        piece = getPieceNotCloned(currentPosition);
         this.board[currentPosition.getRow()][currentPosition.getCol()] = null;
 
         if (piece instanceof Pawn) {
@@ -155,15 +162,16 @@ public class Board {
 
     public boolean isMoveValid(Piece piece, Position newPosition) {
         Board newBoard = copyBoard();
-        newBoard.makeMove(piece, newPosition);
+        Piece newPiece = newBoard.getPieceNotCloned(piece.getPosition());
+        newBoard.makeMove(newPiece, newPosition);
         boolean isMoveValid = !(newBoard.isInCheck(piece.getColor()));
         return isMoveValid;
     }
 
-    private Board copyBoard() {
+    public Board copyBoard() {
         Piece[][] newBoard = new Piece[8][8];
-        King newWhiteKing = this.whiteKing.clone();
-        King newBlackKing = this.blackKing.clone();
+        King newWhiteKing = null;
+        King newBlackKing = null;
         List<Piece> newWhitePieces = new ArrayList<>();
         List<Piece> newBlackPieces = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -171,7 +179,11 @@ public class Board {
                 Piece piece = this.board[i][j];
                 if (piece != null) {
                     piece = piece.clone();
-                    if (piece.getColor().isWhite()) newWhitePieces.add(piece);
+                    if (piece instanceof King) {
+                        if (piece.getColor().isWhite()) newWhiteKing = (King) piece;
+                        else newBlackKing = (King) piece;
+                    } 
+                    else if (piece.getColor().isWhite()) newWhitePieces.add(piece);
                     else newBlackPieces.add(piece);
                 }
                 newBoard[i][j] = piece;

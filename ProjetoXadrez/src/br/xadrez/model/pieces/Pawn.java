@@ -64,7 +64,7 @@ public class Pawn extends Piece {
         }
         if (position.getRow() == initialRow) {
             newPosition = Position.create(initialRow + (2 * moveDirection.getX()), position.getCol());
-            possibleMoves.add(newPosition);
+            if (board.getPieceAt(newPosition) == null) possibleMoves.add(newPosition);
         }
         if (canEnPassant(board)) {
             newPosition = Position.create(initialRow + (4 * moveDirection.getX()), board.getEnPassantCol());

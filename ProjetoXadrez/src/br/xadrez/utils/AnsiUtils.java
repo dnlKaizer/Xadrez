@@ -87,7 +87,7 @@ public class AnsiUtils {
     }
 
     public void placeBoard(int row, int col) {
-        System.out.print("\u001B[" + (row + 4) + ";" + ((col * 3) + 3) + "H");
+        System.out.print("\u001B[" + (row + 1) + ";" + ((col * 3) + 3) + "H");
     }
 
 }
