@@ -96,6 +96,23 @@ public class Board {
         return pieceTo == null || (!pieceFrom.getColor().equals(pieceTo.getColor()));
     }
 
+    public List<Piece> getPiecesChecking(Color color) {
+        List<Piece> piecesChecking = new ArrayList<>();
+        List<Piece> pieces;
+        King king;
+        if (color.isWhite()) {
+            king = whiteKing;
+            pieces = blackPieces;
+        } else {
+            king = blackKing;
+            pieces = whitePieces;
+        }
+        for (Piece piece : pieces) {
+            if (piece.isAttacking(king.getPosition(), this)) piecesChecking.add(piece);
+        }
+        return piecesChecking;
+    }
+
     /**
      * Verifica se o rei da cor está em xeque.
      * 
