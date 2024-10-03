@@ -1,10 +1,13 @@
 package br.xadrez.model;
 
 public class Direction {
+    // Valores do vetor direção
     private final int x;
     private final int y;
+    // Armazena se o vetor é diagonal (é útil, confia em mim)
     private final boolean isDiagonal;
 
+    // Constantes para todas as direções possíveis do vetor
     public static Direction UP = new Direction(-1, 0);
     public static Direction DOWN = new Direction(1, 0);
     public static Direction RIGHT = new Direction(0, 1);
@@ -43,19 +46,15 @@ public class Direction {
         return isDiagonal;
     }
 
-    public Direction invert() {
-        return create((-1) * x,(-1) * y);
-    }
-
     /**
      * Método que busca a próxima posição na direção.
      * 
-     * @param position Posição de origem
+     * @param position {@code Position} de origem
      * @return {@code Position} se for possível andar na direção, {@code null} se não
       */
     public Position getNextPosition(Position position) {
         if (position == null) return null; 
-        // Armazena a próxima posição na direção
+        // Soma os valores do vetor com as coordenadas da posição
         return Position.create(position.getRow() + this.getX(), position.getCol() + this.getY());
     }
 

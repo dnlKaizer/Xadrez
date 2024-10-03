@@ -3,6 +3,7 @@ package br.xadrez.model;
 import java.util.regex.*;
 
 public class Position {
+    // Coordenadas da posição
     private final int row;
     private final int col;
 
@@ -17,9 +18,12 @@ public class Position {
     }
 
     public static Position create(String string) {
+        // Verifica se a string se refere a uma posição válida usando regex
         Pattern pattern = Pattern.compile("^[a-h][1-8]$");
         Matcher matcher = pattern.matcher(string);
         if (!matcher.matches()) return null;
+
+        // Só confia que tá certo 
         return Position.create(
             56 - string.charAt(1),
             string.charAt(0) - 97
@@ -33,6 +37,13 @@ public class Position {
         return col;
     }
 
+    /**
+     * Verifica se as posições estão próximas
+     * a no máximo 1 casa, inclui diagonal.
+     * 
+     * @param position {@code Position} para comparar
+     * @return {@code true} se são próximas, {@code false} se não
+      */
     public boolean isNear(Position position) {
         if (position == null) return false;
         return Math.abs(this.getRow() - position.getRow()) <= 1 &&

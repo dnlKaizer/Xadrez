@@ -1,21 +1,22 @@
 package br.xadrez.model;
 
 public class Color {
-    private final String name; // Nome da cor (ex: "Branco", "Preto")
+    // Nome da cor (ex: "Branco", "Preto")
+    private final String name;
+    // Armazena se a cor é branca (melhor para comparar)
     private final boolean isWhite; 
 
     // Constantes para cores brancas e pretas
     public static final Color WHITE = new Color("Brancas", true);
     public static final Color BLACK = new Color("Pretas", false);
 
-    // Construtor privado para impedir a criação de novas instâncias
     private Color(String name, boolean isWhite) {
         this.name = name;
         this.isWhite = isWhite;
     }
 
     public String getName() {
-        return name; // Retorna o nome da cor
+        return name;
     }
     public boolean isWhite() {
         return isWhite;
@@ -23,7 +24,7 @@ public class Color {
 
     @Override
     public String toString() {
-        return name; // Representação da cor como string
+        return name;
     }
 
     @Override
