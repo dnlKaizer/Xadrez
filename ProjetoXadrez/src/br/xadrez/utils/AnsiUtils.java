@@ -26,27 +26,31 @@ public class AnsiUtils {
     public static final String GRAY_BACKGROUND = "\033[48;5;238m";
 
     public String printRed(String string) {
-        return RED_BACKGROUND + "\u001B[4m" + string + RESET;
+        return RED_BACKGROUND + string + RESET;
+    }
+
+    public String printYellow(String string) {
+        return YELLOW_BACKGROUND + string + RESET;
     }
 
     public String printBlue(String string) {
-        return BLUE_BACKGROUND + "\u001B[4m" + string + RESET;
+        return BLUE_BACKGROUND + string + RESET;
     }
 
     public String printWhite(String string) {
-        return WHITE_BACKGROUND + "\u001B[4m" + string + RESET;
+        return WHITE_BACKGROUND + string + RESET;
     }
 
     public String printBlack(String string) {
-        return BLACK_BACKGROUND + "\u001B[4m" + string + RESET;
+        return BLACK_BACKGROUND + string + RESET;
     }
 
     public String printGray(String string) {
-        return GRAY_BACKGROUND + "\u001B[4m" + string + RESET;
+        return GRAY_BACKGROUND + string + RESET;
     }
 
     public String printGreen(String string) {
-        return GREEN_BACKGROUND + "\u001B[4m" + string + RESET;
+        return GREEN_BACKGROUND + string + RESET;
     }
 
     public void moveCursorUp(int num) {
