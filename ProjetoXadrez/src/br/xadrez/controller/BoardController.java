@@ -37,21 +37,27 @@ public class BoardController {
     }
 
     public void round() {
+        // Verifica se o rei está em xeque
         if (board.isInCheck(board.getTurn())) boardView.highlightCheck(board);
+
+        // Imprime o Menu padrão para selecionar peças
         boardView.printMenu(board);
         Piece piece = boardView.selectPiece(board);
-        Position currentPosition = piece.getPosition();
+
+        // Pega os movimentos válidos da peça e mostra no tabuleiro
         List<Position> validMoves = piece.getValidMoves(board);
         boardView.highlightSquares(board, validMoves, piece);
-        Position newPosition;
+
+        // Imprime o SubMenu para selecionar a posição final da peça
         boardView.printSubMenu(piece);
+        Position newPosition;
         newPosition = boardView.selectPosition();
-        if (!validMoves.contains(newPosition)) {
-            boardView.invalidMove();
-        } else {
-            board.move(piece, newPosition);
-            boardView.updateBoard(board, currentPosition, newPosition);
-        }
+
+        // Verifica se a posição escolhida é um movimento válido
+        if (!validMoves.contains(newPosition)) boardView.invalidMove();
+        else board.move(piece, newPosition);
+        
+        // Restaura o tabuleiro
         boardView.restoreSquares(board);
     }
 

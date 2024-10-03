@@ -160,17 +160,23 @@ public class Board {
 
     public void move(Piece piece, Position to) {
         if (piece == null) return;
-        if (piece.getValidMoves(this).contains(to)) makeMove(piece, to);
+        if (piece.getValidMoves(this).contains(to)) {
+            if (turn.isWhite()) turn = Color.BLACK;
+            else turn = Color.WHITE;
+            makeMove(piece, to);
+        }
     }
 
     public void makeMove(Piece piece, Position newPosition) {
-        if (turn.isWhite()) turn = Color.BLACK;
-        else turn = Color.WHITE;
-
         Piece pieceAtNewPosition = getPieceNotCloned(newPosition);
         Position currentPosition = piece.getPosition();
         piece = getPieceNotCloned(currentPosition);
         this.board[currentPosition.getRow()][currentPosition.getCol()] = null;
+
+        if (piece instanceof King && !piece.getPosition().isNear(newPosition)) {
+            if (newPosition.getCol() > piece.getPosition().getCol()) castleKingSide(piece.getColor());
+            else castleQueenSide(piece.getColor());
+        }
 
         if (piece instanceof King && !((King) piece).hasMoved()) ((King) piece).setHasMoved(true);
         if (piece instanceof Rook && !((Rook) piece).hasMoved()) ((Rook) piece).setHasMoved(true);
@@ -235,7 +241,7 @@ public class Board {
         return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces, turn);
     }
     
-    public Rook getKingSideRook(Color color) {
+    private Rook getKingSideRook(Color color) {
         Piece piece;
         if (color.isWhite()) piece = getPieceNotCloned(Position.create(7, 7));
         else piece = getPieceNotCloned(Position.create(0, 7));
@@ -250,14 +256,19 @@ public class Board {
         positions.add(Direction.RIGHT.getNextPosition(king.getPosition()));
         positions.add(Direction.RIGHT.getNextPosition(positions.get(0)));
         for (Position position : positions) {
-            if (position != null) return false;
+            if (getPieceAt(position) != null) return false;
             if (isAtLeastOnePieceAttacking(position, blackPieces)) return false;
         }
         if (rook == null) return false;
         else return !rook.hasMoved();
     }
+
+    public void castleKingSide(Color color) {
+        Rook rook = getKingSideRook(color);
+        makeMove(rook, Position.create(rook.getPosition().getRow(), 5));
+    }
     
-    public Rook getQueenSideRook(Color color) {
+    private Rook getQueenSideRook(Color color) {
         Piece piece;
         if (color.isWhite()) piece = getPieceNotCloned(Position.create(7, 0));
         else piece = getPieceNotCloned(Position.create(0, 0));
@@ -277,6 +288,11 @@ public class Board {
         }
         if (rook == null) return false;
         else return !rook.hasMoved();
+    }
+
+    public void castleQueenSide(Color color) {
+        Rook rook = getQueenSideRook(color);
+        makeMove(rook, Position.create(rook.getPosition().getRow(), 3));
     }
 
 }
