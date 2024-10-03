@@ -47,7 +47,7 @@ public class King extends Piece {
 
     @Override
     public boolean isAttacking(Position square, Board board) {
-        return false;
+        return this.position.isNear(square);
     }
 
     @Override
