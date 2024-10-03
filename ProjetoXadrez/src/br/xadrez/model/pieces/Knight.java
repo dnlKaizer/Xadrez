@@ -9,6 +9,7 @@ import br.xadrez.model.board.Board;
 
 public class Knight extends Piece {
 
+    // Pulos de movimento/ataque do cavalo
     private final int[][] jumps = {
         {-2,-1}, {-2,1},
         {2,-1}, {2,1},
@@ -20,7 +21,16 @@ public class Knight extends Piece {
         super(color, position);
     }
 
-    private List<Position> getJumpPosition() {
+    /**
+     * Retorna as posições possíveis de pulo do
+     * cavalo. Somente retorna posições que estão
+     * dentro tabuleiro.
+     * 
+     * @return {@code List<Position>} movimentos.
+     * Sempre retorna no mínimo dois movimentos,
+     * mas eles não são validados.
+      */
+    private List<Position> getJumpsPositions() {
         List<Position> list = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             Position newPosition = Position.create(
@@ -44,15 +54,17 @@ public class Knight extends Piece {
 
     @Override
     public boolean isAttacking(Position square, Board board) {
-        List<Position> list = getJumpPosition();
+        List<Position> list = getJumpsPositions();
+        // Verifica se a posição passada está entre as casas de pulo do cavalo
         return list.contains(square);
     }
 
     @Override
     public List<Position> getPossibleMoves(Board board) {
-        List<Position> possibleMoves = getJumpPosition();
+        List<Position> possibleMoves = getJumpsPositions();
         for (int i = 0; i < possibleMoves.size(); i++) {
             Position newPosition = possibleMoves.get(i);
+            // Verifica se as casas de pulo do cavalo não estão ocupadas por peças de mesma cor
             if (!board.isDestinationClear(this.position, newPosition)) {
                 possibleMoves.remove(newPosition);
                 i--;

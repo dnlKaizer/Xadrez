@@ -10,6 +10,7 @@ import br.xadrez.utils.MoveUtils;
 
 public class Queen extends Piece {
 
+    // Direções de movimento/ataque da rainha
     private final Direction[] directions = {
         Direction.UP_RIGHT,
         Direction.UP_LEFT,
@@ -37,7 +38,9 @@ public class Queen extends Piece {
 
     @Override
     public boolean isAttacking(Position square, Board board) {
+        // Direção entre a posição da rainha e a casa que está sendo analisada
         Direction direction = Direction.create(this.position, square);
+        // Verifica se a direção é válida e se o caminho está livre
         return !(direction == null) && board.isPathClear(this.position, square);
     }
 

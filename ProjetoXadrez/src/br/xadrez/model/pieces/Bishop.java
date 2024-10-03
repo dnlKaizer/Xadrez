@@ -10,6 +10,7 @@ import br.xadrez.utils.MoveUtils;
 
 public class Bishop extends Piece {
 
+    // Direções de movimento/ataque do bispo
     private final Direction[] directions = {
         Direction.UP_RIGHT,
         Direction.UP_LEFT,
@@ -33,7 +34,9 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isAttacking(Position square, Board board) {
+        // Direção entre a posição do bispo e a casa que está sendo analisada
         Direction direction = Direction.create(this.position, square);
+        // Verifica se a direção é diagonal e se o caminho está livre
         return !(direction == null) && direction.isDiagonal() && board.isPathClear(this.position, square);
     }
 

@@ -10,7 +10,9 @@ import br.xadrez.utils.MoveUtils;
 
 public class Rook extends Piece {
 
+    // Armazena se a torre já se moveu (crucial para o roque)
     private boolean hasMoved;
+    // Direções de movimento/ataque da torre
     private final Direction[] directions = {
         Direction.UP,
         Direction.DOWN,
@@ -43,7 +45,9 @@ public class Rook extends Piece {
 
     @Override
     public boolean isAttacking(Position square, Board board) {
+        // Direção entre a posição da torre e a casa que está sendo analisada
         Direction direction = Direction.create(this.position, square);
+        // Verifica se a direção é horizontal/vertical e se o caminho está livre
         return !(direction == null) && !(direction.isDiagonal()) && board.isPathClear(this.position, square);
     }
 
