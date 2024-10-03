@@ -28,18 +28,21 @@ public class BoardController {
         boardView.printBoardComplete(board);
         while (true) {
             round();
-            if (board.isCheckMate(board.getTurn())) break;
+            if (board.isCheckMate(board.getTurn())) {
+                boardView.highlightCheck(board);
+                break;
+            }
         }
         System.out.println("XEQUE-MATE PALHAÇO");
     }
 
     public void round() {
+        if (board.isInCheck(board.getTurn())) boardView.highlightCheck(board);
         boardView.printMenu(board);
         Piece piece = boardView.selectPiece(board);
         Position currentPosition = piece.getPosition();
         List<Position> validMoves = piece.getValidMoves(board);
         boardView.highlightSquares(board, validMoves, piece);
-
         Position newPosition;
         boardView.printSubMenu(piece);
         newPosition = boardView.selectPosition();
@@ -49,7 +52,7 @@ public class BoardController {
             board.move(piece, newPosition);
             boardView.updateBoard(board, currentPosition, newPosition);
         }
-        boardView.restoreSquares(board, validMoves);
+        boardView.restoreSquares(board);
     }
 
 }

@@ -98,13 +98,29 @@ public class BoardView {
         return ansi.printRed("   ");
     }
 
-    public void restoreSquares(Board board, List<Position> positions) {
-        for (Position position : positions) {
-            int row = position.getRow();
-            int col = position.getCol();
-            Piece piece = board.getPieceAt(position);
+    public void highlightCheck(Board board) {
+        List<Piece> pieces = board.getPiecesChecking(board.getTurn());
+        for (Piece piece : pieces) {
+            int row = piece.getPosition().getRow();
+            int col = piece.getPosition().getCol();
             ansi.placeBoard(row, col);
-            System.out.print(printSquare(piece, row, col));
+            System.out.print(yellowPiece(piece));
+        }
+        ansi.restore();
+        ansi.moveCursorDown(1);
+    }
+
+    public String yellowPiece(Piece piece) {
+        return ansi.printYellow(" " + piece.getSymbol() + " ");
+    }
+
+    public void restoreSquares(Board board) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board.getPieceAt(Position.create(row, col));
+                ansi.placeBoard(row, col);
+                System.out.print(printSquare(piece, row, col));
+            }
         }
         ansi.restore();
         ansi.moveCursorDown(1);
