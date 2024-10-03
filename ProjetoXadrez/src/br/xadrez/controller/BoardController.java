@@ -28,7 +28,9 @@ public class BoardController {
         boardView.printBoardComplete(board);
         while (true) {
             round();
+            if (board.isCheckMate(board.getTurn())) break;
         }
+        System.out.println("XEQUE-MATE PALHAÇO");
     }
 
     public void round() {

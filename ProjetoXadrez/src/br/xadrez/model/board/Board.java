@@ -118,6 +118,23 @@ public class Board {
         return false;
     }
 
+    public boolean isCheckMate(Color color) {
+        King king;
+        List<Piece> pieces;
+        if (color.isWhite()) {
+            king = whiteKing;
+            pieces = whitePieces;
+        } else {
+            king = blackKing;
+            pieces = blackPieces;
+        }
+        if (!king.getValidMoves(this).isEmpty()) return false;
+        for (Piece piece : pieces) {
+            if (!piece.getValidMoves(this).isEmpty()) return false;
+        }
+        return true;
+    }
+
     public void move(Piece piece, Position to) {
         if (piece == null) return;
         if (piece.getValidMoves(this).contains(to)) makeMove(piece, to);
