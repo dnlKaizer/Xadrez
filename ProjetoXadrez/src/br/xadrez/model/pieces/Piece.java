@@ -27,14 +27,54 @@ public abstract class Piece implements Cloneable {
         if (position != null) this.position = position;
     }
 
+    /**
+     * Retorna o nome da peça.
+     * 
+     * @return {@code String} nome da peça
+      */
     public abstract String getName();
 
+    /**
+     * Retorna a primeira letra da peça.
+     * 
+     * @return {@code String} inicial
+      */
     public abstract String getSymbol();
 
+    /**
+     * Retorna se a peça consegue atacar a posição.
+     * 
+     * @param square {@code Position} quadrado
+     * @param board {@code Board} tabuleiro
+     * @return {@code true} se ela ataca a posição, {@code false} se não
+      */
     public abstract boolean isAttacking(Position square, Board board);
 
+    /**
+     * Retorna uma lista com os movimentos padrão da peça.
+     * Também verifica se o caminho da peça até o destino
+     * não possui nenhuma peça bloqueando.
+     * <br></br>
+     * <b>Exemplo</b>: bispo retorna todas as posições de todas as 
+     * diagonais não bloqueadas.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @return {@code List<Position>} movimentos. Se não possuir
+     * movimentos devido ao bloqueio das peças, retorna uma lista
+     * vazia.
+      */
     public abstract List<Position> getPossibleMoves(Board board);
 
+    /**
+     * Chama o método <b>getPossibleMoves()</b>, valida todos os seus
+     * movimentos e retorna uma lista de movimentos válidos.
+     * <br></br>
+     * Faz uso do método <b>isMoveValid()</b> de {@code Board}.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @return {@code List<Position>} movimentos. Se não possuir
+     * movimentos válidos, retorna uma lista vazia.
+      */
     public List<Position> getValidMoves(Board board) {
         List<Position> moves = getPossibleMoves(board);
         for (int i = 0; i < moves.size(); i++) {
