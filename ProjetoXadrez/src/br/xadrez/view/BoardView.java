@@ -16,12 +16,23 @@ public class BoardView {
     private String br = System.lineSeparator();
     private final AnsiUtils ansi = new AnsiUtils();
 
+    /**
+     * Imprime o tabuleiro e prepara o terminal
+     * para executar os menus.
+     * 
+     * @param board {@code Board} tabuleiro
+      */
     public void printBoardComplete(Board board) {
         System.out.println();
         printBoard(board);
         System.out.println(br + br + br);
     }
 
+    /**
+     * Imprime o tabuleiro no terminal
+     * 
+     * @param board {@code Board} tabuleiro
+      */
     public void printBoard(Board board) {
         for (int row = 0; row < 8; row++) {
             System.out.println(printRow(board, row));
@@ -29,17 +40,13 @@ public class BoardView {
         System.out.println("   a  b  c  d  e  f  g  h ");
     }
 
-    public void updateBoard(Board board, Position currentPosition, Position newPosition) {
-        ansi.placeBoard(currentPosition.getRow(), currentPosition.getCol());
-        System.out.print(printSquare(board.getPieceAt(currentPosition), currentPosition.getRow(), currentPosition.getCol()));
-
-        ansi.placeBoard(newPosition.getRow(), newPosition.getCol());
-        System.out.print(printSquare(board.getPieceAt(newPosition), newPosition.getRow(), newPosition.getCol()));
-
-        ansi.restore();
-        ansi.moveCursorDown(1);
-    }
-
+    /**
+     * Retorna a {@code String} de uma linha do tabuleiro.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @param row {@code int} número da linha
+     * @return {@code String} texto da linha
+      */
     public String printRow(Board board, int row) {
         String line = "";
         line += (8 - row) + " ";
@@ -50,6 +57,14 @@ public class BoardView {
         return line;
     }
 
+    /**
+     * Retorna a {@code String} de uma casa do tabuleiro.
+     * 
+     * @param piece {@code Piece} peça
+     * @param row {@code int} número da linha
+     * @param col {@code int} número da coluna
+     * @return {@code String} texto da casa
+      */
     public String printSquare(Piece piece, int row, int col) {
         String str;
         if (piece == null) str = "   ";
@@ -64,6 +79,17 @@ public class BoardView {
         else return ansi.printBlue(str);
     }
 
+    /**
+     * Destaca as casas do tabuleiro, tais como:
+     * <br></br>
+     * Movimentos válidos das peças;
+     * <br></br>
+     * Possível captura.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @param positions {@code List<Position>} lista de posições
+     * @param piece {@code Piece} peça
+      */
     public void highlightSquares(Board board, List<Position> positions, Piece piece) {
         for (Position position : positions) {
             int row = position.getRow();
@@ -80,6 +106,15 @@ public class BoardView {
         ansi.moveCursorDown(1);
     }
 
+    /**
+     * Retorna a {@code String} de uma casa
+     * do tabuleiro destacada.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @param row {@code int} linha
+     * @param col {@code int} coluna
+     * @return {@code String} texto da casa
+      */
     public String highlightSquare(Board board, int row, int col) {
         Piece piece = board.getPieceAt(Position.create(row, col));
         String str = "";
@@ -94,10 +129,24 @@ public class BoardView {
         else return ansi.printBlue(str);
     }
 
+    /**
+     * Retorna a {@code String} da casa da
+     * tomada de passagem do tabuleiro. 
+     * 
+     * @param row {@code int} linha
+     * @param col {@code int} coluna
+     * @return {@code String} texto da casa
+      */
     public String highlightEnPassant(int row, int col) {
         return ansi.printRed("   ");
     }
 
+    /**
+     * Destaca as peças que estão executando
+     * um xeque no rei.
+     * 
+     * @param board {@code Board} tabuleiro
+     */
     public void highlightCheck(Board board) {
         List<Piece> pieces = board.getPiecesChecking(board.getTurn());
         for (Piece piece : pieces) {
@@ -110,10 +159,22 @@ public class BoardView {
         ansi.moveCursorDown(1);
     }
 
+    /**
+     * Retorna a {@code String} da casa em amarelo
+     * de uma peça que está aplicando xeque.
+     * 
+     * @param piece {@code Piece} peça
+     * @return {@code String} texto da casa
+      */
     public String yellowPiece(Piece piece) {
         return ansi.printYellow(" " + piece.getSymbol() + " ");
     }
 
+    /**
+     * Atualiza o tabuleiro.
+     * 
+     * @param board {@code Board} tabuleiro
+      */
     public void restoreSquares(Board board) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -126,14 +187,31 @@ public class BoardView {
         ansi.moveCursorDown(1);
     }
 
+    /**
+     * Imprime o Menu de seleção de peça.
+     * 
+     * @param board {@code Board} board
+      */
     public void printMenu(Board board) {
         menuPrinter(strPrintTurn(board.getTurn()));
     }
 
+    /**
+     * Imprime o SubMenu de seleção da
+     * próxima posição de uma peça.
+     * 
+     * @param piece {@code Piece} peça
+      */
     public void printSubMenu(Piece piece) {
         menuPrinter(strPrintPiece(piece));
     }
 
+    /**
+     * Atualiza o menu por meio
+     * de um texto. 
+     * 
+     * @param str {@code String} texto
+      */
     private void menuPrinter(String str) {
         ansi.moveCursorUp(3);
         ansi.start();
@@ -143,20 +221,38 @@ public class BoardView {
         ansi.save();
     }
 
+    /**
+     * Retorna o texto que mostra
+     * o turno no menu.
+     * 
+     * @param turn {@code Color} turno
+     * @return {@code String} texto
+      */
     private String strPrintTurn(Color turn) {
         return "Turno: " + turn.getName();
     }
 
+    /**
+     * Retorna o texto que mostra
+     * a peça selecionada no menu.
+     * 
+     * @param piece {@code Piece} peça
+     * @return {@code String} texto
+      */
     private String strPrintPiece(Piece piece) {
         return "Selecionado(a): "
             + piece.getName() + " (" + piece.getColor().toString() + ") em " + piece.getPosition().toString();
     }
 
+    /**
+     * Recebe do usuário a peça selecionada.
+     * Só retorna a peça se ela for válida,
+     * se não, continua rodando.
+     * 
+     * @param board {@code Board} tabuleiro
+     * @return {@code Piece} peça selecionada
+     */
     public Piece selectPiece(Board board) {
-        return getPiece(board);
-    }
-    
-    private Piece getPiece(Board board) {
         while (true) {
             Piece piece = board.getPieceAt(selectPosition());
             if (piece != null) {
@@ -172,6 +268,13 @@ public class BoardView {
         }
     }
     
+    /**
+     * Recebe do usuário a posição selecionada.
+     * Só retorna a posição se ela for válida,
+     * se não, continua rodando.
+     * 
+     * @return {@code Position} posição
+      */
     public Position selectPosition() {
         while (true) {
             replace("Escolha uma posição: ");
@@ -183,17 +286,33 @@ public class BoardView {
         }
     }
 
+    /**
+     * Automaticamente substitui a linha
+     * do cursor salva por um texto.
+     * 
+     * @param str {@code String} texto
+      */
     public void replace(String str) {
         ansi.restore();
         ansi.replaceLine(str);
     }
 
+    /** 
+     * Imprime a mensagem de movimento inválido.
+     */
     public void invalidMove() {
         replace("Movimento inválido.");
         wait(1500);
         ansi.moveCursorDown(1);
     }
 
+    /**
+     * Faz a máquina esperar o tempo
+     * em milissegundos para continuar
+     * a rodar o código.
+     * 
+     * @param time {@code int} tempo, em milissegundos
+      */
     private void wait(int time) {
         try {Thread.sleep(time);} 
         catch (Exception e) {}
