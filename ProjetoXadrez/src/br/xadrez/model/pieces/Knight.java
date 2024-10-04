@@ -61,16 +61,15 @@ public class Knight extends Piece {
 
     @Override
     public List<Position> getPossibleMoves(Board board) {
-        List<Position> possibleMoves = getJumpsPositions();
-        for (int i = 0; i < possibleMoves.size(); i++) {
-            Position newPosition = possibleMoves.get(i);
-            // Verifica se as casas de pulo do cavalo não estão ocupadas por peças de mesma cor
-            if (!board.isDestinationClear(this.position, newPosition)) {
-                possibleMoves.remove(newPosition);
-                i--;
+        List<Position> validMoves = new ArrayList<>();
+        // Verifica cada posição de getJumpsPositions
+        for (Position newPosition : getJumpsPositions()) {
+            // Verifica se na posição de destino tem uma peça da mesma cor
+            if (board.isDestinationClear(this.position, newPosition)) {
+                validMoves.add(newPosition);
             }
         }
-        return possibleMoves;
+        return validMoves;
     }
 
     @Override
