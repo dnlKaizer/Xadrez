@@ -186,7 +186,9 @@ public class AnsiUtils {
      * @param col {@code int} coluna
       */
     public void placeBoard(int row, int col) {
-        System.out.print("\u001B[" + (row + 1) + ";" + ((col * 3) + 3) + "H");
+        restore();
+        moveCursorUp(12 - row);
+        moveCursorRight(2 + col * 3);
     }
 
 }
