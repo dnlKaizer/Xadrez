@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.xadrez.model.Color;
 import br.xadrez.model.Direction;
+import br.xadrez.model.Move;
 import br.xadrez.model.Position;
 import br.xadrez.model.pieces.*;
 
@@ -24,6 +25,8 @@ public class Board {
     private Color turn;
     // Coluna do peão que se moveu 2 casas
     private int enPassantCol;
+    // Lista de Movimentos
+    private List<Move> moves;
     
     protected Board(Piece[][] board, King whiteKing, King blackKing, List<Piece> whitePieces, List<Piece> blackPieces, Color turn) {
         this.board = board;
@@ -35,6 +38,7 @@ public class Board {
         this.capturedBlackPieces = new ArrayList<>();
         this.turn = turn;
         this.enPassantCol = -1;
+        this.moves = new ArrayList<>();
     }
 
     public Color getTurn() {
@@ -273,6 +277,7 @@ public class Board {
         if (pieceAtNewPosition != null) capture(pieceAtNewPosition);
         // Coloca a peça na nova posição e atualiza seu estado
         this.board[newPosition.getRow()][newPosition.getCol()] = piece;
+        moves.add(Move.create(piece, newPosition, pieceAtNewPosition));
         piece.setPosition(newPosition);
     }
 
@@ -347,7 +352,6 @@ public class Board {
         return new Board(newBoard, newWhiteKing, newBlackKing, newWhitePieces, newBlackPieces, turn);
     }
     
-
     /**
      * Retorna a torre da ala do rei se
      * ela estiver na posição inicial.
